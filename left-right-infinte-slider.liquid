@@ -1,0 +1,385 @@
+{%- comment -%}
+    Add Link to head element
+    <script src="https://cdn.jsdelivr.net/npm/marquee3000@1.0.8/marquee3k-noUMD.min.js"></script>
+
+    Add before this script </body>
+    <script>
+        if (Shopify.designMode) {
+            class MarqueeSection extends HTMLElement {
+                constructor(){
+                    super();
+                    Marquee3k.init();    
+                }
+            }
+            customElements.define('marquee-section', MarqueeSection);
+        }else {
+            Marquee3k.init();
+        }
+    </script>
+{%- endcomment -%}
+{% assign review_left_blocks = section.blocks | where: 'type', 'review_left' %}
+{% assign review_right_blocks = section.blocks | where: 'type', 'review_right' %}
+
+{% style %}
+    #shopify-section-{{ section.id }} {
+        --text-color-1: {{ section.settings.text_color_1 }}; 
+        --text-color-2: {{ section.settings.text_color_2 }}; 
+        --background: {{ section.settings.bg_color }};
+        --review-bg: {{ section.settings.review_bg_color }};
+        --review-shadow: {{ section.settings.review_show_color.red }}, {{ section.settings.review_show_color.green }}, {{ section.settings.review_show_color.blue }};
+        --customer-name-color: {{ section.settings.review_name_color }};
+        --customer-title-color: {{ section.settings.review_title_color }};
+        --description-color: {{ section.settings.review_desc_color }};
+    }
+
+    #shopify-section-{{ section.id }} {
+        background: var(--background, #FEE2E2);
+        padding: 60px 0;
+        overflow: hidden;
+    }
+    @media screen and (max-width: 750px) {
+        #shopify-section-{{ section.id }} {
+          padding: 40px 0;
+        }
+    }
+    #shopify-section-{{ section.id }} marquee-section .marquee3k .marquee3k__copy:nth-child(1) {
+        margin-right: 10px;
+    }
+    #shopify-section-{{ section.id }} marquee-section .marquee3k .marquee3k__copy:not(:nth-child(1)) {
+        margin-right: 10px;
+    }
+    #shopify-section-{{ section.id }} .top-main-area .title {
+        font-family: "Onest";
+        font-style: normal;
+        font-weight: 700;
+        font-size: 39px;
+        line-height: 1.26;
+        text-align: center;
+        color: var(--text-color-1, #000000);
+        margin-bottom: 2rem;
+    }
+    #shopify-section-{{ section.id }} .top-main-area .title strong {
+        color: var(--text-color-2, #EB3435);
+    }
+    @media screen and (min-width: 750px) {
+        #shopify-section-{{ section.id }} .top-main-area .title.bottom_strong strong {
+          display: block;
+        }
+    }
+    @media screen and (max-width: 750px) {
+        #shopify-section-{{ section.id }} .top-main-area .title {
+          font-size: 27px;
+        }
+        #shopify-section-{{ section.id }} .top-main-area .title.bottom_strong_mobile strong {
+          display: block;
+        }
+    }
+    #shopify-section-{{ section.id }} .inner-container {
+        display: flex;
+        gap: 10px;
+    }
+    #shopify-section-{{ section.id }} .inner-container .review-card {
+        width: 530px;
+        background: #FFFFFF;
+        background: var(--review-bg, #262626);
+        box-shadow: 0px 6.62215px 42.3818px rgba(var(--review-shadow), 0.06);
+        border-radius: 13.2443px;
+        padding: 20px;
+    }
+    @media screen and (max-width: 750px) {
+        #shopify-section-{{ section.id }} .inner-container .review-card {
+          width: 341px;
+        }
+    }
+    #shopify-section-{{ section.id }} .inner-container .review-card .top-area {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    #shopify-section-{{ section.id }} .inner-container .review-card .top-area .left-side {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    #shopify-section-{{ section.id }} .inner-container .review-card .top-area .left-side .title-name .customer-name {
+        font-family: "Onest";
+        font-style: normal;
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 1.2;
+        color: var(--customer-name-color, #262626);
+    }
+    @media screen and (max-width: 750px) {
+        #shopify-section-{{ section.id }} .inner-container .review-card .top-area .left-side .title-name .customer-name {
+          font-size: 16px;
+        }
+    }
+    #shopify-section-{{ section.id }} .inner-container .review-card .top-area .left-side .title-name .customer-title {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 1.71;
+        color: var(--customer-title-color, #737373);
+    }
+    #shopify-section-{{ section.id }} .inner-container .review-card .bottom-area {
+        display: flex;
+        font-family: "Onest";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 1.44;
+        color: var(--description-color, #525252);
+        word-break: break-all;
+        white-space: normal;
+    }
+    @media screen and (max-width: 750px) {
+        #shopify-section-{{ section.id }} .inner-container .review-card .bottom-area {
+          font-size: 14px;
+        }
+    }
+    #shopify-section-{{ section.id }} .inner-container .review-card .bottom-area * {
+        word-break: normal;
+        white-space: normal;
+    }
+{% endstyle %}
+
+<div class="top-main-area">
+    <h3 class="title {% if section.settings.make_strong_bottom %}bottom_strong{% endif %} {% if section.settings.make_strong_bottom_mobile %}bottom_strong_mobile{% endif %}">
+        {{ section.settings.title }}
+    </h3>
+</div>
+{% if review_left_blocks.size != 0 %}
+    <marquee-section class="container">
+        <div class="marquee-{{ section.id }} marquee3k">
+            <div>
+                <div class="inner-container">
+                    {% for block in section.blocks %}
+                        {% if block.type == 'review_left' %}
+                            <div class="review-card">
+                                <div class="top-area">
+                                    <div class="left-side">
+                                        <div class="icon-wrapper">
+                                            {{ block.settings.profile | img_url: '32x' | img_tag: block.settings.profile, 'icon-image' }}
+                                        </div>
+                                        <div class="title-name">
+                                            <h3 class="customer-name">
+                                                {{ block.settings.name }}
+                                            </h3>
+                                            <p class="customer-title">
+                                                {{ block.settings.title }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="right-side">
+                                        <div class="star-wrapper">
+                                            {{ section.settings.start_image | img_url: '200x' | img_tag: section.settings.start_image, 'icon-image' }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottom-area">
+                                    {{ block.settings.content }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </marquee-section>
+{% endif %}
+{{ review_right_blocks.size }}
+{% if review_right_blocks.size != 0 %}
+    <marquee-section class="container">
+        <div class="marquee-{{ section.id }} marquee3k" data-reverse="true">
+            <div>
+                <div class="inner-container">
+                    {% for block in section.blocks %}
+                        {% if block.type == 'review_right' %}
+                            <div class="review-card">
+                                <div class="top-area">
+                                    <div class="left-side">
+                                        <div class="icon-wrapper">
+                                            {{ block.settings.profile | img_url: '32x' | img_tag: block.settings.profile, 'icon-image' }}
+                                        </div>
+                                        <div class="title-name">
+                                            <h3 class="customer-name">
+                                                {{ block.settings.name }}
+                                            </h3>
+                                            <p class="customer-title">
+                                                {{ block.settings.title }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="right-side">
+                                        <div class="star-wrapper">
+                                            {{ section.settings.start_image | img_url: '200x' | img_tag: section.settings.start_image, 'icon-image' }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottom-area">
+                                    {{ block.settings.content }}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </marquee-section>
+{% endif %}
+
+
+
+{% schema %}
+{
+    "name": "Left Right Reviews",
+    "class": "marquee-review-section",
+    "presets": [
+        {
+            "name":"Left Right Reviews"
+        }
+    ],
+    "blocks": [
+        {
+            "name": "Review Left",
+            "type": "review_left",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "profile",
+                    "label": "Profile Image"
+                },
+                {
+                    "type": "text",
+                    "id": "name",
+                    "label": "Name",
+                    "default": "Sophia Mitchell"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Customer"
+                },
+                {
+                    "type": "richtext",
+                    "id": "content",
+                    "label": "Content",
+                    "default": "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy text.</p>"
+                }
+            ]
+        },
+        {
+            "name": "Review Right",
+            "type": "review_right",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "profile",
+                    "label": "Profile Image"
+                },
+                {
+                    "type": "text",
+                    "id": "name",
+                    "label": "Name",
+                    "default": "Sophia Mitchell"
+                },
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Customer"
+                },
+                {
+                    "type": "richtext",
+                    "id": "content",
+                    "label": "Content",
+                    "default": "<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum standard dummy text.</p>"
+                }
+            ]
+        }
+    ],
+    "settings": [
+        
+        {
+            "type": "inline_richtext",
+            "id": "title",
+            "label": "Title",
+            "default": "Customers keep talking about <strong>soma mouth tape!</strong>"
+        },
+        {
+            "type": "checkbox",
+            "id": "make_strong_bottom",
+            "label": "Show Strong in next line",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "make_strong_bottom_mobile",
+            "label": "Show Strong in next line(Mobile)",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "start_image",
+            "label": "Start Image"
+        },
+        {
+            "type": "header",
+            "content": "Color"
+        },
+        {
+            "type": "color",
+            "id": "bg_color",
+            "label": "Background",
+            "default": "#FEE2E2"
+        },
+        {
+            "type": "color",
+            "id": "text_color_1",
+            "label": "title Color 1",
+            "default": "#000000"
+        },
+        {
+            "type": "color",
+            "id": "text_color_2",
+            "label": "title Color 2",
+            "default": "#EB3435"
+        },
+        {
+            "type": "header",
+            "content": "Review Card Color"
+        },
+        {
+            "type": "color",
+            "id": "review_bg_color",
+            "label": "Background",
+            "default": "#FFFFFF"
+        },
+        {
+            "type": "color",
+            "id": "review_show_color",
+            "label": "Shadow",
+            "default": "#000000"
+        },
+        {
+            "type": "color",
+            "id": "review_name_color",
+            "label": "Customer Name",
+            "default": "#262626"
+        },
+        {
+            "type": "color",
+            "id": "review_title_color",
+            "label": "Customer Title",
+            "default": "#737373"
+        },
+        {
+            "type": "color",
+            "id": "review_desc_color",
+            "label": "Description",
+            "default": "#525252"
+        }
+    ]
+}
+{% endschema %}
